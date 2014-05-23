@@ -85,19 +85,15 @@
 		// open connection
 		req.open(method, url, !sync);
 
-		// send it
- 		if (typeof(window.XDomainRequest)!=="undefined" && req instanceof XDomainRequest) {
-      setTimeout(function() {
-        req.send(method !== 'GET' ? data : null);
-      }, 0);
-    } else {
-
+    if (typeof(req.setRequestHeader)!=="undefined") {
 		  // set headers
 		  for (var header in headers) {
 		  	req.setRequestHeader(header, headers[header]);
 		  }
-      req.send(method !== 'GET' ? data : null);
     }
+
+		// send it
+    req.send(method !== 'GET' ? data : null);
 		return req;
 	};
 
