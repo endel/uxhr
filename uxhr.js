@@ -56,6 +56,14 @@
 			data = serialized.join('&');
 		}
 
+		// use ? or &, accourding to given url
+		if (method === 'GET' && data) {
+			url += (url.indexOf('?') >= 0) ? '&' + data : '?' + data;
+		}
+
+		// open connection
+		req.open(method, url, !sync);
+
 		// set timeout
 		if ('ontimeout' in req) {
 			req.timeout = timeout;
@@ -76,14 +84,6 @@
 			complete(req.responseText);
 			error(req.responseText, req.status);
 		};
-
-		// use ? or &, accourding to given url
-		if (method === 'GET' && data) {
-			url += (url.indexOf('?') >= 0) ? '&' + data : '?' + data;
-		}
-
-		// open connection
-		req.open(method, url, !sync);
 
     if (typeof(req.setRequestHeader)!=="undefined") {
 		  // set headers
