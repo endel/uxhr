@@ -65,9 +65,12 @@
 		req.open(method, url, !sync);
 
 		// set timeout
-		if ('ontimeout' in req) {
-			req.timeout = timeout;
-			req.ontimeout = ontimeout;
+		// timeouts cannot be set for synchronous requests made from a document.
+		if (!sync) {
+			if ('ontimeout' in req) {
+				req.timeout = timeout;
+				req.ontimeout = ontimeout;
+			}
 		}
 
 		// set onprogress
