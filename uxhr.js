@@ -11,9 +11,11 @@
 	"use strict";
 
 	return function (url, data, options) {
-
 		data = data || '';
 		options = options || {};
+
+		var uri = document.createElement('a');
+		uri.href = url;
 
 		var complete = options.complete || function(){},
 			success = options.success || function(){},
@@ -24,12 +26,13 @@
 			headers = options.headers || {},
 			method = options.method || 'GET',
 			sync = options.sync || false,
+			isCors = (uri.hostname != location.hostname),
 			req = (function() {
 
-				if (typeof 'XMLHttpRequest' !== 'undefined') {
+				if (typeof XMLHttpRequest !== 'undefined') {
 
 					// CORS (IE8-9)
-					if (url.indexOf('http') === 0 && typeof XDomainRequest !== 'undefined') {
+					if (isCors && typeof XDomainRequest !== 'undefined') {
 						return new XDomainRequest();
 					}
 
